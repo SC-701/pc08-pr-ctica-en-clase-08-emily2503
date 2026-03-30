@@ -42,7 +42,6 @@ jobs:
           dotnet restore "DA/DA.csproj"
           dotnet restore "Flujo/Flujo.csproj"
           dotnet restore "Reglas/Reglas.csproj"
-          dotnet restore "Servicios/Servicios.csproj"
           dotnet restore "API/API.csproj"
 
       - name: Build with dotnet (excluding BD project)
@@ -52,7 +51,6 @@ jobs:
           dotnet build "DA/DA.csproj" --configuration Release --no-restore
           dotnet build "Flujo/Flujo.csproj" --configuration Release --no-restore
           dotnet build "Reglas/Reglas.csproj" --configuration Release --no-restore
-          dotnet build "Servicios/Servicios.csproj" --configuration Release --no-restore
           dotnet build "API/API.csproj" --configuration Release --no-restore
 
       - name: Run tests (excluding BD project)
