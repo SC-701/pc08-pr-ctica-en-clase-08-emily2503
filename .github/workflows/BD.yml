@@ -2,7 +2,7 @@ name: Deploy Seguridad Database to Azure SQL
 
 env:
   AZURE_SQL_SERVER: emilylm.database.windows.net
-  AZURE_SQL_DATABASE: Vehiculos
+  AZURE_SQL_DATABASE: Productos
   DACPAC_PATH: 'Seguridad/Seguridad.API/BD/bin/Release/BD.dacpac'
 
 on:
@@ -42,7 +42,7 @@ jobs:
             <packageSourceCredentials>
               <github>
                 <add key="Username" value="${{ github.actor }}" />
-                <add key="ClearTextPassword" value="${{ secrets.GITHUB_TOKEN }}" />
+                <add key="ClearTextPassword" value="${{ secrets.PaquetesTOKEN }}" />
               </github>
             </packageSourceCredentials>
           </configuration>
