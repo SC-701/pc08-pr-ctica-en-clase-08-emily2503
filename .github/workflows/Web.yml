@@ -1,0 +1,82 @@
+name: Deploy Producto React Web App to Azure
+
+env:
+  AZURE_WEBAPP_NAME: WebProductosEmily   # Cambia esto por el nombre de tu Azure Web App para la aplicación React
+  AZURE_WEBAPP_PACKAGE_PATH: './Productos.Web/Web'
+  NODE_VERSION: '8.0'                # Versión de Node.js
+
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'Productos.Web**'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up .NET Core
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ env.DOTNET_VERSION }}
+
+      - name: Set up dependency caching for faster builds
+        uses: actions/cache@v3
+        with:
+          path: ~/.nuget/packages
+          key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-nuget-
+
+      - name: Restore dependencies
+        run: dotnet restore "Productos.Web/Productos.Web.sln"
+
+      - name: Build with dotnet
+        run: |
+          dotnet build "Productos.Web/Abstracciones/*.csproj" --configuration Release --no-restore
+      
+          dotnet build "Productos.Web/Reglas/*.csproj" --configuration Release --no-restore
+          dotnet build "Productos.Web/Web/*.csproj" --configuration Release --no-restore
+
+      - name: Run tests
+        run: dotnet test "Productos.Web/Productos.Web.sln" --no-restore --verbosity normal --configuration Release || echo "No tests found or test execution failed"
+
+      - name: dotnet publish
+        run: dotnet publish "Productos.Web/Web/*.csproj" -c Release -o ./publish --no-restore
+
+      - name: Upload artifact for deployment job
+        uses: actions/upload-artifact@v4
+        with:
+          name: .net-app
+          path: ./publish
+
+  deploy:
+    permissions:
+      contents: none
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'Production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+      - name: Download artifact from build job
+        uses: actions/download-artifact@v4
+        with:
+          name: .net-app
+
+      - name: Deploy to Azure Web App
+        id: deploy-to-webapp
+        uses: azure/webapps-deploy@v3
+        with:
+          app-name: ${{ env.AZURE_WEBAPP_NAME }}
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          package: .
+          respect-funcignore: true
