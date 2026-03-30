@@ -1,11 +1,19 @@
 name: Publicar paquetes NuGet de Autorización
 
-on: push: branches: \[ "main" \] paths: -
-'Seguridad/Seguridad.MiddlewareAutorizacion/\*\*' workflow_dispatch:
+on:
+  push:
+    branches: [ "main" ]
+    paths:
+      - 'Seguridad/Seguridad.MiddlewareAutorizacion/**'
+  workflow_dispatch:
 
-permissions: contents: read packages: write
+permissions:
+  contents: read
+  packages: write
 
-jobs: publish: runs-on: ubuntu-latest
+jobs:
+  publish:
+    runs-on: ubuntu-latest
 
     steps:
       - uses: actions/checkout@v4
