@@ -4,14 +4,12 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-	  <Version>1.0.0</Version>
-	  <PackageId>Autorizacion.DA.emily2503</PackageId>
-	  <Authors>emily2503code</Authors>
-	  <Description>
-		  Carga de datos
-	  </Description>
-	  <RepositoryUrl>https://github.com/SC-701/pc08-pr-ctica-en-clase-08-emily2503.git</RepositoryUrl>
-	  <PackageReadmeFile>README.md</PackageReadmeFile>
+    <Version>1.0.0</Version>
+    <PackageId>Autorizacion.DA.emily2503</PackageId>
+    <Authors>emily2503</Authors>
+    <Description>Capa de acceso a datos del paquete de autorización. Consulta perfiles de usuario en la BD de seguridad con Dapper</Description>
+    <RepositoryUrl>https://github.com/SC701</RepositoryUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -22,8 +20,9 @@
   <ItemGroup>
     <ProjectReference Include="..\Autorizacion.Abstracciones\Autorizacion.Abstracciones.csproj" />
   </ItemGroup>
-	<ItemGroup>
-		<None Include="..\README.md" Pack="true" PackagePath="\" />
-	</ItemGroup>
+
+  <ItemGroup>
+	  <None Include="..\README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
 
 </Project>
