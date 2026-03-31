@@ -5,6 +5,12 @@
 <div class="productos-container">
     <div class="header">
         <h1>Productos</h1>
+        <!-- BOTÓN LOGOUT -->
+        <form method="get" asp-page="/Seguridad/Logout">
+            <button type="submit" class="btn btn-danger fw-semibold px-3">
+                <i class="bi bi-box-arrow-right"></i> Cerrar sesión
+            </button>
+        </form>
         <a class="btn-agregar" asp-page="./Agregar">+ Agregar</a>
     </div>
     <div class="grid">

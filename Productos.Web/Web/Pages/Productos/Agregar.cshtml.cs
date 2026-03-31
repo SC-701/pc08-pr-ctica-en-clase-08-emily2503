@@ -1,5 +1,6 @@
 using Abstracciones.Interfaces.Reglas;
 using Abstracciones.Modelos;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -10,6 +11,7 @@ using System.Text.RegularExpressions;
 
 namespace Web.Pages.Productos
 {
+    [Authorize]
     public class AgregarModel : PageModel
     {
         private readonly IConfiguracion _configuracion;
@@ -35,7 +37,8 @@ namespace Web.Pages.Productos
             if (!ModelState.IsValid)
                 return Page();
             string endpoint = _configuracion.ObtenerMetodo("ApiEndpoints", "AgregarProducto");
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
+
             var solicitud = new HttpRequestMessage(HttpMethod.Post, endpoint);
             var respuesta = await cliente.PostAsJsonAsync(endpoint, producto);
             respuesta.EnsureSuccessStatusCode();
@@ -46,7 +49,7 @@ namespace Web.Pages.Productos
         {
             string endpoint = _configuracion.ObtenerMetodo("ApiEndpoints",
                 "ObtenerCategorias");
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
             var solicitud = new HttpRequestMessage(HttpMethod.Get, endpoint);
 
             var respuesta = await cliente.SendAsync(solicitud);
@@ -70,7 +73,7 @@ namespace Web.Pages.Productos
         {
             string endpoint = _configuracion.ObtenerMetodo("ApiEndpoints",
                 "ObtenerSubCategorias");
-            var cliente = new HttpClient();
+            var cliente = ObtenerClienteConToken();
             var solicitud = new HttpRequestMessage(HttpMethod.Get, string.Format(endpoint, categoriaId));
 
             var respuesta = await cliente.SendAsync(solicitud);
@@ -90,6 +93,17 @@ namespace Web.Pages.Productos
         {
             var modelos = await ObtenerSubCategorias(categoriaId);
             return new JsonResult(modelos);
+        }
+        private HttpClient ObtenerClienteConToken()
+        {
+            var tokenClaim = HttpContext.User.Claims
+                .FirstOrDefault(c => c.Type == "Token");
+            var cliente = new HttpClient();
+            if (tokenClaim != null)
+                cliente.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue(
+                        "Bearer", tokenClaim.Value);
+            return cliente;
         }
     }
 }

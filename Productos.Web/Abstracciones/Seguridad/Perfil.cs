@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Abstracciones.Seguridad
 {
-    internal class Perfil
+    public class Perfil
     {
+        public int Id { get; set; }
+        public string Nombre { get; set; }
     }
 }

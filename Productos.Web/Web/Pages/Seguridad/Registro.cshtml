@@ -2,3 +2,73 @@
 @model Web.Pages.Seguridad.RegistroModel
 @{
 }
+<header class="subhead">
+    <div class="container">
+        <div class="masthead-subheading">SC-701: Programación Web Avanzada</div>
+    </div>
+</header>
+<section class="page-section bg-light" id="principal">
+    <div class="container">
+        <div class="col-xl-5 col-lg-6 col-md-8 col-sm-10 mx-auto">
+
+            <div class="card shadow-lg border-0 rounded-4">
+                <div class="card-body p-4 p-md-5">
+
+                    <div class="text-center mb-4">
+                        <h2 class="fw-bold text-primary">Crear cuenta</h2>
+                        <p class="text-muted">Completa los datos para registrarte</p>
+                    </div>
+
+                    <form method="post">
+
+                        <!-- Usuario -->
+                        <div class="form-floating mb-3">
+                            <input type="text" asp-for="usuario.NombreUsuario" class="form-control" placeholder="Usuario" />
+                            <label>Nombre de usuario</label>
+                        </div>
+                        <span asp-validation-for="usuario.NombreUsuario" class="text-danger small"></span>
+
+                        <!-- Correo -->
+                        <div class="form-floating mt-3 mb-3">
+                            <input type="email" asp-for="usuario.CorreoElectronico" class="form-control" placeholder="Correo" />
+                            <label>Correo electrónico</label>
+                        </div>
+                        <span asp-validation-for="usuario.CorreoElectronico" class="text-danger small"></span>
+
+                        <!-- Password -->
+                        <div class="form-floating mt-3 mb-3">
+                            <input type="password" asp-for="usuario.Password" class="form-control" placeholder="Contraseña" />
+                            <label>Contraseña</label>
+                        </div>
+                        <span asp-validation-for="usuario.Password" class="text-danger small"></span>
+
+                        <!-- Confirmar Password -->
+                        <div class="form-floating mt-3 mb-3">
+                            <input type="password" asp-for="usuario.ConfirmarPassword" class="form-control" placeholder="Confirmar contraseña" />
+                            <label>Confirmar contraseña</label>
+                        </div>
+                        <span asp-validation-for="usuario.ConfirmarPassword" class="text-danger small"></span>
+
+                        <!-- Checkbox -->
+                        <div class="form-check mb-4 mt-3">
+                            <input class="form-check-input" type="checkbox" id="aceptar" required>
+                            <label class="form-check-label">
+                                Acepto los <a href="#" class="text-decoration-none">términos y condiciones</a>
+                            </label>
+                        </div>
+
+                        <!-- Botón -->
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg rounded-3">
+                                Registrarse
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
